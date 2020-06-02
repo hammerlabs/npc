@@ -82,7 +82,10 @@ function appendSection(title, name, description) {
   document.querySelector("#npc-attributes tbody").appendChild(clone);
 }
 
-function getNpcAttribute(preId, tabName, range) {
+/**
+edit https://docs.google.com/spreadsheets/d/1_jHbct1lB_QgbVODodlpxyDE4Y3CrPzvFwLL9lS56jo/ for additional tables to roll on
+ */
+function getNpcAttribute(tabName, range) {
   gapi.client.sheets.spreadsheets.values
     .get({
       spreadsheetId: spreadsheetId,
@@ -94,11 +97,6 @@ function getNpcAttribute(preId, tabName, range) {
         var randomNumber = Math.floor(Math.random() * range.values.length) + 1;
         if (range.values.length > 0) {
           appendSection(tabName, range.values[randomNumber][0], range.values[randomNumber][1]);
-          //   for (i = 0; i < range.values.length; i++) {
-          //     var row = range.values[i];
-          //     // Print columns A and E, which correspond to indices 0 and 4.
-          //     appendPre(row[0]);
-          //   }
         } else {
           appendPre(preId, "No data found.");
         }
@@ -117,8 +115,8 @@ function updateSigninStatus(isSignedIn) {
   if (isSignedIn) {
     authorizeButton.style.display = "none";
     signoutButton.style.display = "block";
-    getNpcAttribute("npc-talent", "Talent");
-    getNpcAttribute("npc-quirk", "Quirk");
+    getNpcAttribute("Talent");
+    getNpcAttribute("Quirk");
   } else {
     authorizeButton.style.display = "block";
     signoutButton.style.display = "none";
