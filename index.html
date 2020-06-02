@@ -12,6 +12,12 @@
 
     <link rel="stylesheet" href="css/normalize.css" />
     <link rel="stylesheet" href="css/main.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="all"
+      href="https://fonts.googleapis.com/css?family=Asul:400,700"
+    />
 
     <meta name="theme-color" content="#fafafa" />
   </head>
@@ -31,6 +37,24 @@
 
     <pre id="npc-talent" style="white-space: pre-wrap;"></pre>
     <pre id="npc-quirk" style="white-space: pre-wrap;"></pre>
+
+    <table id="npc-attributes" class="stats">
+      <tbody>
+        <!-- template clones get inserted here -->
+      </tbody>
+    </table>
+
+    <template id="section">
+      <tr class="section">
+        <td rowspan="2" class="section_title" id="title">{title}</td>
+        <td><b id="name">{name}</b></td>
+      </tr>
+      <tr>
+        <td id="description">
+          {description}
+        </td>
+      </tr>
+    </template>
 
     <script src="js/vendor/modernizr-3.8.0.min.js"></script>
     <script src="js/vendor/jquery-3.4.1.min.js"></script>

@@ -263,3 +263,52 @@ textarea {
   }
 }
 
+body {
+  font-family: 'Asul', sans-serif;
+  margin: 0px;
+  padding: 0px;
+  font-size: 14px;
+}
+table {
+  margin: 0px 2em;
+  border: none;
+  border-collapse: collapse;
+  display: table;
+  box-sizing: border-box;
+  border-spacing: 2px;
+  border-color: grey;
+}
+table.stats {
+  margin: 2ex auto;
+  border: none;
+  border-top: 1px solid;
+  border-color: #cccccc;
+}
+tbody {
+  display: table-row-group;
+  vertical-align: middle;
+  border-color: inherit;
+}
+tr {
+  display: table-row;
+  vertical-align: inherit;
+  border-color: inherit;
+}
+tr:hover {
+  background-color: #DDD;
+}
+table.stats td.section_title {
+  width: 8em;
+  padding-top: 8px;
+  text-align: right;
+  white-space: nowrap;
+  font-size: larger;
+  font-weight: bold;
+}
+table.stats td {
+  border: none;
+  border-bottom: 1px solid;
+  border-color: #cccccc;
+  padding: 4px 1em;
+  vertical-align: top;
+}

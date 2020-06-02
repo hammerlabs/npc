@@ -86,23 +86,30 @@ function appendPre(id, message) {
   pre.appendChild(textContent);
 }
 
+function appendSection(title, name, description) {
+  clone = document.querySelector("template#section").content.cloneNode(true);
+  
+  document.querySelector("#npc-attributes tbody").appendChild(clone);
+}
+
 function getNpcAttribute(preId, tabName, range) {
   gapi.client.sheets.spreadsheets.values
     .get({
       spreadsheetId: spreadsheetId,
-      range: tabName+"!A1:A",
+      range: tabName + "!A1:A",
     })
     .then(
       function (response) {
         var range = response.result;
         var randomNumber = Math.floor(Math.random() * range.values.length) + 1;
         if (range.values.length > 0) {
-          appendPre(preId, tabName+": " + range.values[randomNumber][0]);
-        //   for (i = 0; i < range.values.length; i++) {
-        //     var row = range.values[i];
-        //     // Print columns A and E, which correspond to indices 0 and 4.
-        //     appendPre(row[0]);
-        //   }
+          appendPre(preId, tabName + ": " + range.values[randomNumber][0]);
+          appendSection(tabName, "name", range.values[randomNumber][0]);
+          //   for (i = 0; i < range.values.length; i++) {
+          //     var row = range.values[i];
+          //     // Print columns A and E, which correspond to indices 0 and 4.
+          //     appendPre(row[0]);
+          //   }
         } else {
           appendPre(preId, "No data found.");
         }
