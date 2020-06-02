@@ -74,21 +74,11 @@ function handleSignoutClick(event) {
   gapi.auth2.getAuthInstance().signOut();
 }
 
-/**
- * Append a pre element to the body containing the given message
- * as its text node. Used to display the results of the API call.
- *
- * @param {string} message Text to be placed in pre element.
- */
-function appendPre(id, message) {
-  var pre = document.getElementById(id);
-  var textContent = document.createTextNode(message + "\n");
-  pre.appendChild(textContent);
-}
-
 function appendSection(title, name, description) {
   clone = document.querySelector("template#section").content.cloneNode(true);
-  
+  clone.getElementById("title").textContent = title;
+  clone.getElementById("name").textContent = name;
+  clone.getElementById("description").textContent = description;
   document.querySelector("#npc-attributes tbody").appendChild(clone);
 }
 
@@ -96,15 +86,14 @@ function getNpcAttribute(preId, tabName, range) {
   gapi.client.sheets.spreadsheets.values
     .get({
       spreadsheetId: spreadsheetId,
-      range: tabName + "!A1:A",
+      range: tabName + "!A1:B",
     })
     .then(
       function (response) {
         var range = response.result;
         var randomNumber = Math.floor(Math.random() * range.values.length) + 1;
         if (range.values.length > 0) {
-          appendPre(preId, tabName + ": " + range.values[randomNumber][0]);
-          appendSection(tabName, "name", range.values[randomNumber][0]);
+          appendSection(tabName, range.values[randomNumber][0], range.values[randomNumber][1]);
           //   for (i = 0; i < range.values.length; i++) {
           //     var row = range.values[i];
           //     // Print columns A and E, which correspond to indices 0 and 4.
