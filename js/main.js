@@ -3,6 +3,7 @@ var creds;
 var authorizeButton = document.getElementById("authorize_button");
 var signoutButton = document.getElementById("signout_button");
 
+var spreadsheetId = "1_jHbct1lB_QgbVODodlpxyDE4Y3CrPzvFwLL9lS56jo";
 /**
  *  On load, called to load the auth2 library and API client library.
  */
@@ -60,21 +61,6 @@ function initClient() {
 }
 
 /**
- *  Called when the signed in status changes, to update the UI
- *  appropriately. After a sign-in, the API is called.
- */
-function updateSigninStatus(isSignedIn) {
-  if (isSignedIn) {
-    authorizeButton.style.display = "none";
-    signoutButton.style.display = "block";
-    listMajors();
-  } else {
-    authorizeButton.style.display = "block";
-    signoutButton.style.display = "none";
-  }
-}
-
-/**
  *  Sign in the user upon button click.
  */
 function handleAuthClick(event) {
@@ -94,38 +80,51 @@ function handleSignoutClick(event) {
  *
  * @param {string} message Text to be placed in pre element.
  */
-function appendPre(message) {
-  var pre = document.getElementById("content");
+function appendPre(id, message) {
+  var pre = document.getElementById(id);
   var textContent = document.createTextNode(message + "\n");
   pre.appendChild(textContent);
 }
 
-/**
- * Print the names and majors of students in a sample spreadsheet:
- * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
- */
-function listMajors() {
+function getNpcAttribute(preId, tabName, range) {
   gapi.client.sheets.spreadsheets.values
     .get({
-      spreadsheetId: "1_jHbct1lB_QgbVODodlpxyDE4Y3CrPzvFwLL9lS56jo",
-      range: "Talents!A1:A20",
+      spreadsheetId: spreadsheetId,
+      range: tabName+"!A1:A",
     })
     .then(
       function (response) {
         var range = response.result;
+        var randomNumber = Math.floor(Math.random() * range.values.length) + 1;
         if (range.values.length > 0) {
-          appendPre("NPC Talent:");
-          for (i = 0; i < range.values.length; i++) {
-            var row = range.values[i];
-            // Print columns A and E, which correspond to indices 0 and 4.
-            appendPre(row[0]);
-          }
+          appendPre(preId, tabName+": " + range.values[randomNumber][0]);
+        //   for (i = 0; i < range.values.length; i++) {
+        //     var row = range.values[i];
+        //     // Print columns A and E, which correspond to indices 0 and 4.
+        //     appendPre(row[0]);
+        //   }
         } else {
-          appendPre("No data found.");
+          appendPre(preId, "No data found.");
         }
       },
       function (response) {
-        appendPre("Error: " + response.result.error.message);
+        appendPre(preId, "Error: " + response.result.error.message);
       }
     );
+}
+
+/**
+ *  Called when the signed in status changes, to update the UI
+ *  appropriately. After a sign-in, the API is called.
+ */
+function updateSigninStatus(isSignedIn) {
+  if (isSignedIn) {
+    authorizeButton.style.display = "none";
+    signoutButton.style.display = "block";
+    getNpcAttribute("npc-talent", "Talent");
+    getNpcAttribute("npc-quirk", "Quirk");
+  } else {
+    authorizeButton.style.display = "block";
+    signoutButton.style.display = "none";
+  }
 }
